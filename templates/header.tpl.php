@@ -8,6 +8,12 @@
           <li class="pt-4">
             <a class="home" href="/">Trang nhất</a>
           </li>
+          <li class="pt-4">
+            <a class="room" href="/?ma-phong=<?php echo md5(time()); ?>">Tạo phòng</a>
+          </li>
+          <li class="pt-4">
+            <a class="contact" href="/lien-he/">Liên hệ</a>
+          </li>
         </ul>
       </nav>
     </div>

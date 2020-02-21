@@ -111,7 +111,7 @@ function selectText(element) {
 function copyToClipboard(element) {
     var $temp = $('<input>');
     $('body').append($temp);
-    $temp.val($(element).text()).select();
+    $temp.val($(element).val()).select();
     document.execCommand('copy');
     $temp.remove();
     switch ($('html').attr('lang')) {

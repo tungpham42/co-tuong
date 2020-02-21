@@ -11,7 +11,7 @@ $sub = 'game';
 <html lang="vi">
   <head>
   <meta charset="UTF-8">
-  <title>Cờ Tướng</title>
+  <title>Trang nhất - Cờ Tướng</title>
 <?php
 include template('head.game');
 include template('ga');
@@ -21,6 +21,38 @@ include template('ga');
 <?php
 include template('header');
 ?>
+    <style type="text/css">
+    .highlight {
+      box-shadow: inset 0 0 3px 3px white;
+    }
+    #myBoard {
+      touch-action: none !important;
+    }
+    #url {
+      cursor: pointer;
+    }
+    .side-color {
+      font-weight: bolder;
+      font-size: 42px;
+      text-align: center;
+      line-height: 1.2em;
+      display: block;
+    }
+    .side-color.red {
+      color: red;
+    }
+    .side-color.black {
+      color: black;
+    }
+    @media (max-width: 991px) {
+      #myBoard {
+        width: 100% !important;
+      }
+      .btn.w-25 {
+        width: 49% !important;
+      }
+    }
+    </style>
     <main class="main">
       <div class="container-fluid game px-0">
         <div class="container p-5">
@@ -28,7 +60,33 @@ include template('header');
 <?
 if (isset($_GET['choi-voi-may']) && $_GET['choi-voi-may'] == '✓'):
 ?>
-          <h3 class="text-center my-3">Đang chơi với máy</h3><?php
+          <h3 class="text-center my-3">Đang chơi với máy</h3>
+<?php
+elseif (isset($_GET['ma-phong'])):
+?>
+          <h3 class="text-center my-3">Mã phòng: <?php echo $_GET['ma-phong']; ?></h3>
+          <p class="w-100 text-center mt-5">
+<?php
+if (isset($_GET['duoc-moi']) && $_GET['duoc-moi'] == '✓'):
+?>
+            <span class="alert alert-success d-inline-block" role="alert">Đã được mời</span>
+            <span class="side-color black">QUÂN ĐEN</span>
+<?php
+else:
+?>
+            <a class="w-25 mx-auto btn btn-success" target="_blank" href="/?ma-phong=<?php echo $_GET['ma-phong']; ?>&amp;duoc-moi=✓">Mời bạn bè cùng chơi</a>
+            <div id="copy-url" class="input-group mb-3 w-75 mx-auto">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="url-addon">Sao chép</span>
+              </div>
+              <input type="text" class="form-control" id="url" aria-describedby="url-addon" value="https://<?php echo $_SERVER['SERVER_NAME']; ?>/?ma-phong=<?php echo $_GET['ma-phong']; ?>&amp;duoc-moi=✓" />
+            </div>
+            <span class="side-color red">QUÂN ĐỎ</span>
+<?php
+endif;
+?>
+          </p>
+<?php
 else:
 ?>
           <h3 class="text-center my-3">Đang chơi với nhau</h3>
@@ -36,33 +94,18 @@ else:
 endif;
 ?>
           <div class="row">
-            <style type="text/css">
-            .highlight {
-              box-shadow: inset 0 0 3px 3px white;
-            }
-            #myBoard {
-              touch-action: none !important;
-            }
-            @media (max-width: 991px) {
-              #myBoard {
-                width: 100% !important;
-              }
-              .btn.w-25 {
-                width: 49% !important;
-              }
-            }
-            </style>
             <div id="myBoard" class="w-50 mx-auto"></div>
+            <input type="hidden" name="FEN" id="FEN" />
             <p class="w-100 text-center mt-5">
 <?
 if (isset($_GET['choi-voi-may']) && $_GET['choi-voi-may'] == '✓'):
 ?>
-              <a class="w-25 btn btn-info" href="/">Chơi với nhau</a>
+              <a class="w-25 btn btn-danger" href="/">Chơi với nhau</a>
               <a class="w-25 btn btn-warning" href="/?choi-voi-may=✓">Chơi lại</a>
 <?php
 else:
 ?>
-              <a class="w-25 btn btn-info" href="/?choi-voi-may=✓">Chơi với máy</a>
+              <a class="w-25 btn btn-danger" href="/?choi-voi-may=✓">Chơi với máy</a>
 <?php
 endif;
 ?>
@@ -71,181 +114,17 @@ endif;
       </div>
 <?php
 include template('script.game');
-if (isset($_GET['choi-voi-may']) && $_GET['choi-voi-may'] == '✓'):
-?>
-      <script type="text/javascript">
-        let board = null;
-        let game = new Xiangqi();
-
-        function removeGreySquares () {
-          $('#myBoard .square-2b8ce').removeClass('highlight');
-        }
-
-        function greySquare (square) {
-          let $square = $('#myBoard .square-' + square);
-
-          $square.addClass('highlight');
-        }
-
-        function onDragStart (source, piece, position, orientation) {
-          // do not pick up pieces if the game is over
-          if (game.game_over()) return false;
-
-          // only pick up pieces for Red
-          if (piece.search(/^b/) !== -1) return false;
-        }
-
-        function makeRandomMove () {
-          let possibleMoves = game.moves();
-
-          // game over
-          if (possibleMoves.length === 0) return;
-
-          let randomIdx = Math.floor(Math.random() * possibleMoves.length);
-          game.move(possibleMoves[randomIdx]);
-          board.position(game.fen());
-        }
-
-        function onDrop (source, target) {
-          // see if the move is legal
-          let move = game.move({
-            from: source,
-            to: target,
-            promotion: 'q' // NOTE: always promote to a queen for example simplicity
-          });
-
-          // illegal move
-          if (move === null) return 'snapback';
-
-          // make random legal move for black
-          window.setTimeout(makeRandomMove, 250);
-        }
-
-        function onMouseoverSquare (square, piece) {
-          // get list of possible moves for this square
-          let moves = game.moves({
-            square: square,
-            verbose: true
-          });
-
-          // exit if there are no moves available for this square
-          if (moves.length === 0) return;
-
-          // highlight the square they moused over
-          greySquare(square);
-
-          // highlight the possible squares for this piece
-          for (let i = 0; i < moves.length; i++) {
-            greySquare(moves[i].to);
-          }
-        }
-
-        function onMouseoutSquare (square, piece) {
-          removeGreySquares();
-        }
-        // update the board position after the piece snap
-        // for castling, en passant, pawn promotion
-        function onSnapEnd () {
-          board.position(game.fen());
-        }
-
-        let config = {
-          draggable: true,
-          position: 'start',
-          onDragStart: onDragStart,
-          onDrop: onDrop,
-          onMouseoutSquare: onMouseoutSquare,
-          onMouseoverSquare: onMouseoverSquare,
-          onSnapEnd: onSnapEnd
-        };
-        board = Xiangqiboard('myBoard', config);
-      </script>
-<?php
-else:
-?>
-      <script type="text/javascript">
-        let board = null;
-        let game = new Xiangqi();
-
-        function removeGreySquares () {
-          $('#myBoard .square-2b8ce').removeClass('highlight');
-        }
-
-        function greySquare (square) {
-          let $square = $('#myBoard .square-' + square);
-
-          $square.addClass('highlight');
-        }
-
-        function onDragStart (source, piece) {
-          // do not pick up pieces if the game is over
-          if (game.game_over()) return false;
-
-          // or if it's not that side's turn
-          if ((game.turn() === 'r' && piece.search(/^b/) !== -1) ||
-              (game.turn() === 'b' && piece.search(/^r/) !== -1)) {
-            return false;
-          }
-        }
-
-        function onDrop (source, target) {
-          removeGreySquares();
-
-          // see if the move is legal
-          let move = game.move({
-            from: source,
-            to: target
-          });
-
-          // illegal move
-          if (move === null) return 'snapback';
-        }
-
-        function onMouseoverSquare (square, piece) {
-          // get list of possible moves for this square
-          let moves = game.moves({
-            square: square,
-            verbose: true
-          });
-
-          // exit if there are no moves available for this square
-          if (moves.length === 0) return;
-
-          // highlight the square they moused over
-          greySquare(square);
-
-          // highlight the possible squares for this piece
-          for (let i = 0; i < moves.length; i++) {
-            greySquare(moves[i].to);
-          }
-        }
-
-        function onMouseoutSquare (square, piece) {
-          removeGreySquares();
-        }
-
-        function onSnapEnd () {
-          board.position(game.fen());
-        }
-
-        let config = {
-          draggable: true,
-          position: 'start',
-          onDragStart: onDragStart,
-          onDrop: onDrop,
-          onMouseoutSquare: onMouseoutSquare,
-          onMouseoverSquare: onMouseoverSquare,
-          onSnapEnd: onSnapEnd,
-          pieceTheme: '/static/img/xiangqipieces/wikipedia/{piece}.svg'
-        };
-        board = Xiangqiboard('myBoard', config);
-      </script>
-<?php
-endif;
+if (isset($_GET['choi-voi-may']) && $_GET['choi-voi-may'] == '✓') {
+  include template('game.ai');
+} elseif (isset($_GET['ma-phong'])) {
+  include template('game.room');
+} else {
+  include template('game.human');
+}
 ?>
       <div class="container-fluid game-explanation px-0">
         <div class="container p-5">
-          <h2 class="h1-responsivefooter text-center my-4">Giải nghĩa</h2>
+          <h2 class="h1-responsivefooter text-center my-4">Giới thiệu</h2>
           <div class="row">
             <p>Cờ tướng (Tiếng Trung: 象棋), hay còn gọi là cờ Trung Hoa (Tiếng Trung: 中國象棋), là một trò chơi trí tuệ dành cho hai người. Đây là loại cờ phổ biến nhất tại các nước như Trung Hoa, Việt Nam, Đài Loan và Singapore và nằm trong cùng một thể loại cờ với cờ vua, shogi, janggi.</p>
             <p>Trò chơi này mô phỏng cuộc chiến giữa hai quốc gia, với mục tiêu là bắt được Tướng của đối phương. Các đặc điểm khác biệt của cờ tướng so với các trò chơi cùng họ là: các quân đặt ở giao điểm các đường thay vì đặt vào ô, quân Pháo phải nhảy qua 1 quân khi ăn quân, các khái niệm sông và cung nhằm giới hạn các quân Tướng, Sĩ và Tượng.</p>

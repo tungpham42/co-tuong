@@ -16,7 +16,7 @@ body.loading {
 }
 header.site-header {
   width: 100%;
-  background-color: rgba(0, 117, 154, 0.84);
+  background-color: rgba(255, 0, 40, 0.84);
   user-select: none; /* supported by Chrome and Opera */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -37,8 +37,9 @@ header.site-header {
     background-color: inherit;
   }
   a {
-    color: white;
+    color: gold;
     position: relative;
+    font-weight: bolder;
     &:not(.navbar-brand) {
       top: -5px;
       &:before, &::before {
@@ -46,7 +47,7 @@ header.site-header {
         position: absolute;
         top: 10px;
         left: 0;
-        background: #fff;
+        background: gold;
         width: 100%;
         height: 2px;
         -webkit-transform: translateY(24px);
@@ -87,7 +88,7 @@ header.site-header {
     li {
       padding: 15px;
       a {
-        font-weight: 600;
+        font-weight: bolder;
       }
     }
   }
@@ -101,7 +102,7 @@ header.site-header {
     }
     .dropdown-item.active, .dropdown-item:active {
       background-color: $c-base;
-      color: white;
+      color: gold;
     }
   }
   .menu-toggle {
@@ -115,12 +116,12 @@ header.site-header {
     padding: 37px;
     z-index: 3;
     &.open {
-      background-image: url(/static/img/ic-menu-open.svg);
+      background-image: url(/static/img/ic-menu-open-gold.svg);
       width: 20px;
       height: 12px;
     }
     &.close {
-      background-image: url(/static/img/ic-menu-close.svg);
+      background-image: url(/static/img/ic-menu-close-gold.svg);
       width: 20px;
       height: 15px;
     }
@@ -149,7 +150,7 @@ header.site-header {
         & ~ nav.navbar {
           display: block;
           position: absolute;
-          background-color: rgba(0, 117, 154, 0.8);
+          background-color: rgba(255, 0, 40, 0.8);
           top: 74px;
           left: 0;
           z-index: 2;
@@ -174,7 +175,7 @@ header.site-header {
               margin: 0;
               padding: 12px 24px;
               a {
-                color: white;
+                color: gold;
               }
               .dropdown-menu {
                 a {
@@ -182,7 +183,7 @@ header.site-header {
                 }
                 .dropdown-item.active, .dropdown-item:active {
                   background-color: $c-base;
-                  color: white;
+                  color: gold;
                 }
               }
             }
