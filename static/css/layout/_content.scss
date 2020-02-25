@@ -4,9 +4,7 @@ body {
   background-color: rgba(0,117,154,0.15) !important;
 }
 .hero {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url('/static/img/gold-banner.png');
+  background-color: lightgoldenrodyellow;
   .hero-box {
     background-color: rgba(255, 250, 240, 0.42);
     .nav-tabs {
@@ -66,9 +64,7 @@ body {
   background-color: #FAFAFA;
 }
 .container-fluid.about, .container-fluid.bmi, .container-fluid.game, .container-fluid.contact {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url('/static/img/gold-banner.png');
+  background-color: lightgoldenrodyellow;
 }
 .container-fluid.bmi-explanation, .container-fluid.game-explanation {
   background-color: #f5e5b5;
@@ -128,7 +124,7 @@ body {
   }
 }
 .adsense {
-  background-color: #f8e8d8;
+  background-color: floralwhite;
 }
 .btn {
   cursor: pointer;

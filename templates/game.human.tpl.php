@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
 let board = null;
 let game = new Xiangqi();
 
@@ -29,11 +29,11 @@ function readTextFile(file) {
   rawFile.send(null);
 }
 function removeGreySquares () {
-  $('#myBoard .square-2b8ce').removeClass('highlight');
+  $('#ban-co .square-2b8ce').removeClass('highlight');
 }
 
 function greySquare (square) {
-  let $square = $('#myBoard .square-' + square);
+  let $square = $('#ban-co .square-' + square);
 
   $square.addClass('highlight');
 }
@@ -89,6 +89,16 @@ function onSnapEnd () {
   board.position(game.fen());
   $('#FEN').val(game.fen());
   writeTextFile('/FEN/sample.txt');
+  document.getElementById('nuoc-co').play();
+  if (game.turn() === 'r') {
+    $('#game-status').removeClass('black').addClass('red').html('<i class="fal fa-chess-clock-alt"></i> Tới lượt ĐỎ');
+  } else if (game.turn() === 'b') {
+    $('#game-status').removeClass('red').addClass('black').html('<i class="fal fa-chess-clock"></i> Tới lượt ĐEN');
+  }
+  if (game.game_over()) {
+    document.getElementById('het-tran').play();
+    $('#game-over').removeClass('d-none').addClass('d-inline-block');
+  }
 }
 
 let config = {
@@ -99,10 +109,14 @@ let config = {
   onMouseoutSquare: onMouseoutSquare,
   onMouseoverSquare: onMouseoverSquare,
   onSnapEnd: onSnapEnd,
-  pieceTheme: '/static/img/xiangqipieces/wikipedia/{piece}.svg'
+  //pieceTheme: '/static/img/xiangqipieces/traditional/{piece}.svg'
 };
-board = Xiangqiboard('myBoard', config);
-
+board = Xiangqiboard('ban-co', config);
+if (game.turn() === 'r') {
+  $('#game-status').removeClass('black').addClass('red').html('<i class="fal fa-chess-clock-alt"></i> Tới lượt ĐỎ');
+} else if (game.turn() === 'b') {
+  $('#game-status').removeClass('red').addClass('black').html('<i class="fal fa-chess-clock"></i> Tới lượt ĐEN');
+}
 function updateBoard() {
   readTextFile('/FEN/sample.txt');
 }

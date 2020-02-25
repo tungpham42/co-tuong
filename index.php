@@ -11,166 +11,147 @@ $sub = 'game';
 <html lang="vi">
   <head>
   <meta charset="UTF-8">
-  <title>Trang nhất - Cờ Tướng</title>
+  <title><?php echo (isset($_GET['ma-phong'])) ? 'Phòng: '.$_GET['ma-phong']: 'Trang nhất'; ?> - Cờ Tướng</title>
 <?php
 include template('head.game');
 include template('ga');
 ?>
   </head>
-  <body class="home" data-href="/">
+  <body class="<?php echo (isset($_GET['ma-phong'])) ? 'room': 'home'; ?>" data-href="/">
 <?php
 include template('header');
 ?>
-    <style type="text/css">
-    .highlight {
-      box-shadow: inset 0 0 3px 3px white;
-    }
-    #myBoard {
-      touch-action: none !important;
-    }
-    #url {
-      cursor: pointer;
-    }
-    .side-color {
-      font-weight: bolder;
-      font-size: 42px;
-      text-align: center;
-      line-height: 1.2em;
-      display: block;
-    }
-    .side-color.red {
-      color: red;
-    }
-    .side-color.black {
-      color: black;
-    }
-    @media (max-width: 991px) {
-      #myBoard {
-        width: 100% !important;
-      }
-      .btn.w-25 {
-        width: 49% !important;
-      }
-    }
-    </style>
     <main class="main">
       <div class="container-fluid game px-0">
         <div class="container p-5">
-          <h2 class="h1-responsivefooter text-center my-4">Cờ Tướng</h2>
+          <h2 class="h1-responsivefooter text-center my-4">Cờ tướng cho mọi người</h2>
+          <audio id="nuoc-co">
+            <source src="/static/sound/am-thanh-co.wav" type="audio/wav">
+            Your browser does not support the audio element.
+          </audio>
+          <audio id="het-tran">
+            <source src="/static/sound/het-tran.mp3" type="audio/mp3">
+            Your browser does not support the audio element.
+          </audio>
+          <p class="w-100 text-center my-1">
+            <a id="tao-phong" data-file="/ma-phong/<?php echo md5(time()); ?>.txt" class="btn btn-success btn-lg" href="/?ma-phong=<?php echo md5(time()); ?>"><i class="fad fa-plus-hexagon"></i> Tạo phòng</a>
+          </p>
 <?
-if (isset($_GET['choi-voi-may']) && $_GET['choi-voi-may'] == '✓'):
+if (!isset($_GET['quan'])):
+  if (isset($_GET['choi-voi-may']) && $_GET['choi-voi-may'] == 'ok'):
 ?>
-          <h3 class="text-center my-3">Đang chơi với máy</h3>
+          <h3 class="text-center my-2"><i class="fal fa-desktop"></i> Đang chơi với máy</h3>
 <?php
-elseif (isset($_GET['ma-phong'])):
+  elseif (isset($_GET['ma-phong'])):
 ?>
-          <h3 class="text-center my-3">Mã phòng: <?php echo $_GET['ma-phong']; ?></h3>
-          <p class="w-100 text-center mt-5">
-<?php
-if (isset($_GET['duoc-moi']) && $_GET['duoc-moi'] == '✓'):
-?>
-            <span class="alert alert-success d-inline-block" role="alert">Đã được mời</span>
-            <span class="side-color black">QUÂN ĐEN</span>
-<?php
-else:
-?>
-            <a class="w-25 mx-auto btn btn-success" target="_blank" href="/?ma-phong=<?php echo $_GET['ma-phong']; ?>&amp;duoc-moi=✓">Mời bạn bè cùng chơi</a>
-            <div id="copy-url" class="input-group mb-3 w-75 mx-auto">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="url-addon">Sao chép</span>
-              </div>
-              <input type="text" class="form-control" id="url" aria-describedby="url-addon" value="https://<?php echo $_SERVER['SERVER_NAME']; ?>/?ma-phong=<?php echo $_GET['ma-phong']; ?>&amp;duoc-moi=✓" />
-            </div>
-            <span class="side-color red">QUÂN ĐỎ</span>
-<?php
-endif;
-?>
+          <p id="room-code" class="w-100 text-center mt-2">
+            <span class="alert alert-info d-inline-block" role="alert"><i class="fad fa-trophy-alt"></i> Mã phòng: <?php echo $_GET['ma-phong']; ?></span>
           </p>
 <?php
-else:
+    if (isset($_GET['duoc-moi']) && $_GET['duoc-moi'] == 'ok'):
 ?>
-          <h3 class="text-center my-3">Đang chơi với nhau</h3>
+          <p class="w-100 text-center mt-2">
+            <span class="alert alert-success d-inline-block" role="alert">Đã được mời</span>
+            <span class="side-color black">QUÂN ĐEN</span>
+          </p>
+<?php
+    else:
+?>
+          <p class="w-100 text-center mt-2">
+            <a class="w-25 mx-auto btn btn-success btn-sm" target="_blank" href="/?ma-phong=<?php echo $_GET['ma-phong']; ?>&amp;duoc-moi=ok"><i class="fad fa-external-link-alt"></i> Mời bạn bè cùng chơi</a>
+          </p>
+          <div id="copy-url" class="input-group mb-2 w-50 mx-auto">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="url-addon"><i class="fal fa-copy"></i></span>
+            </div>
+            <input type="text" class="form-control" id="url" aria-describedby="url-addon" value="https://<?php echo $_SERVER['SERVER_NAME']; ?>/?ma-phong=<?php echo $_GET['ma-phong']; ?>&amp;duoc-moi=ok" />
+          </div>
+          <p class="w-100 text-center mt-2">
+            <span class="side-color red">QUÂN ĐỎ</span>
+          </p>
+<?php
+    endif;
+  else:
+?>
+          <h3 class="text-center my-2"><i class="fal fa-user"></i> Đang chơi với nhau</h3>
+<?php
+  endif;
+elseif (isset($_GET['quan'])):
+?>          
+          <p id="room-code" class="w-100 text-center mt-2">
+            <span class="alert alert-info d-inline-block" role="alert"><i class="fad fa-trophy-alt"></i> Mã phòng: <?php echo $_GET['ma-phong']; ?></span>
+          </p>
+<?php
+  if ($_GET['quan'] == 'do'):
+?>
+          <p class="w-100 text-center mt-2">
+            <span class="side-color red">QUÂN ĐỎ</span>
+          </p>
+<?php
+  elseif ($_GET['quan'] == 'den'):
+?>
+          <p class="w-100 text-center mt-2">
+            <span class="side-color black">QUÂN ĐEN</span>
+          </p>
+<?php
+  endif;
+?>
 <?php
 endif;
 ?>
           <div class="row">
-            <div id="myBoard" class="w-50 mx-auto"></div>
+            <p class="w-100 text-center my-1">
+              <span class="d-inline-block rounded" id="game-status"></span>
+            </p>
+            <p class="w-100 text-center mt-2">
+              <span class="rounded d-none" id="game-over"><i class="fad fa-flag-checkered"></i> HẾT TRẬN</span>
+            </p>
+            <div id="ban-co" class="w-50 mx-auto"></div>
             <input type="hidden" name="FEN" id="FEN" />
-            <p class="w-100 text-center mt-5">
 <?
-if (isset($_GET['choi-voi-may']) && $_GET['choi-voi-may'] == '✓'):
+if (isset($_GET['choi-voi-may']) && $_GET['choi-voi-may'] == 'ok'):
 ?>
-              <a class="w-25 btn btn-danger" href="/">Chơi với nhau</a>
-              <a class="w-25 btn btn-warning" href="/?choi-voi-may=✓">Chơi lại</a>
+            <p class="w-100 text-center mt-4">
+              <a class="w-25 btn btn-danger btn-lg" href="/"><i class="fad fa-user"></i> Chơi với nhau</a>
+              <a class="w-25 btn btn-warning btn-lg" href="/?choi-voi-may=ok"><i class="fad fa-redo-alt"></i> Chơi lại</a>
+            </p>
 <?php
 else:
 ?>
-              <a class="w-25 btn btn-danger" href="/?choi-voi-may=✓">Chơi với máy</a>
+            <p class="w-100 text-center mt-4">
+              <a class="w-25 btn btn-danger btn-lg" href="/?choi-voi-may=ok"><i class="fad fa-desktop"></i> Chơi với máy</a>
+            </p>
 <?php
 endif;
 ?>
-            </p>
+            <h4 class="w-100 mt-5"><i class="fab fa-github"></i> Xin chân thành cám ơn:</h4>
+            <ul id="credit">
+              <li><a target="_blank" href="https://github.com/lengyanyu258/xiangqiboardjs">lengyanyu258/xiangqiboardjs</a></li>
+              <li><a target="_blank" href="https://github.com/lengyanyu258/xiangqi.js">lengyanyu258/xiangqi.js</a></li>
+              <li><a target="_blank" href="https://github.com/twbs/bootstrap">twbs/bootstrap</a></li>
+              <li><a target="_blank" href="https://github.com/jquery/jquery">jquery/jquery</a></li>
+              <li><a target="_blank" href="https://github.com/popperjs/popper-core">popperjs/popper-core</a></li>
+              <li><a target="_blank" href="https://github.com/FortAwesome/Font-Awesome">FortAwesome/Font-Awesome</a></li>
+              <li><a target="_blank" href="https://github.com/tungpham42/co-tuong">tungpham42/co-tuong</a></li>
+            </ul>
+          </div>
         </div>
       </div>
 <?php
 include template('script.game');
-if (isset($_GET['choi-voi-may']) && $_GET['choi-voi-may'] == '✓') {
+if (isset($_GET['choi-voi-may']) && $_GET['choi-voi-may'] == 'ok') {
   include template('game.ai');
 } elseif (isset($_GET['ma-phong'])) {
   include template('game.room');
 } else {
   include template('game.human');
 }
-?>
-      <div class="container-fluid game-explanation px-0">
-        <div class="container p-5">
-          <h2 class="h1-responsivefooter text-center my-4">Giới thiệu</h2>
-          <div class="row">
-            <p>Cờ tướng (Tiếng Trung: 象棋), hay còn gọi là cờ Trung Hoa (Tiếng Trung: 中國象棋), là một trò chơi trí tuệ dành cho hai người. Đây là loại cờ phổ biến nhất tại các nước như Trung Hoa, Việt Nam, Đài Loan và Singapore và nằm trong cùng một thể loại cờ với cờ vua, shogi, janggi.</p>
-            <p>Trò chơi này mô phỏng cuộc chiến giữa hai quốc gia, với mục tiêu là bắt được Tướng của đối phương. Các đặc điểm khác biệt của cờ tướng so với các trò chơi cùng họ là: các quân đặt ở giao điểm các đường thay vì đặt vào ô, quân Pháo phải nhảy qua 1 quân khi ăn quân, các khái niệm sông và cung nhằm giới hạn các quân Tướng, Sĩ và Tượng.</p>
-            <h3 class="w-100">Bàn cờ</h3>
-            <p>Bàn cờ là hình chữ nhật do 9 đường dọc và 10 đường ngang cắt nhau vuông góc tại 90 điểm hợp thành. Một khoảng trống gọi là sông nằm ngang giữa bàn cờ, chia bàn cờ thành hai phần đối xứng bằng nhau. Mỗi bên có một cung Tướng hình vuông do 4 ô hợp thành tại các đường dọc 4, 5, 6 kể từ đường ngang cuối của mỗi bên, trong 4 ô này có vẽ hai đường chéo.</p>
-            <p>Theo quy ước, khi bàn cờ được quan sát chính diện, phía dưới sẽ là quân Trắng (hoặc Đỏ), phía trên sẽ là quân Đen (hoặc Xanh). Các đường dọc bên Trắng (Đỏ) được đánh số từ 1 đến 9 từ phải qua trái. Các đường dọc bên Đen (Xanh) được đánh số từ 9 tới 1 từ phải qua trái.</p>
-            <h3 class="w-100">Luật chơi</h3>
-            <p>Ván cờ được tiến hành giữa hai người, một người cầm quân Trắng (hay Đỏ), một người cầm quân Đen (hay Xanh). Mục đích của mỗi người là tìm mọi cách đi quân trên bàn cờ theo đúng luật để chiếu bí hay bắt Tướng (hay Soái) của đối phương.</p>
-            <h3 class="w-100">Các quân cờ</h3>
-            <h4 class="w-100">Tướng (Soái)</h4>
-            <p>Quân Tướng đi từng ô một, đi ngang hoặc dọc và luôn luôn ở trong phạm vi cung, không được ra ngoài. Tính theo khả năng chiến đấu thì Tướng là quân yếu nhất do chỉ đi nước một và bị giới hạn trong cung. Tuy nhiên trong nhiều tình huống, đặc biệt khi cờ tàn đòn "lộ mặt tướng" lại tỏ ra rất mạnh.</p>
-            <p>Tướng được chốt chặt trong cung và có tới 2 Sĩ và Tượng canh gác hai bên. Chính điều này làm cho ván cờ trở nên khó phân thắng bại, cơ may hòa cờ rất lớn.</p>
-            <h4 class="w-100">Sĩ</h4>
-            <p>Quân Sĩ đi chéo 1 ô mỗi nước và luôn luôn phải ở trong cung. Như vậy, quân Sĩ có 5 giao điểm có thể đứng hợp lệ và là quân cờ yếu nhất.</p>
-            <p>Sĩ có chức năng trong việc bảo vệ Tướng, mất Sĩ được cho là nguy hiểm khi đối phương còn đủ 2 Xe hoặc dùng Xe Mã Tốt tấn công. Bỏ Pháo ăn Sĩ rồi dùng 2 Xe hoặc dùng Xe Mã Tốt tấn công tấn công là đòn chiến thuật thường thấy. Khi cờ tàn còn Pháo thì phải chú ý giữ Sĩ để làm ngòi cho Pháo tấn công.</p>
-            <h4 class="w-100">Tượng</h4>
-            <p>Quân Tượng đi chéo 2 ô mỗi nước và không được vượt sang sông. Vì vậy trên bàn cờ, mỗi bên ta có 7 vị trí mà quân Tượng có thể đi được.</p>
-            <p>Nước đi của Tượng không hợp lệ khi có một quân cờ nằm chặn giữa đường đi. Ta gọi là Tượng bị cản và vị trí cản được gọi là "mắt Tượng". Tượng được tính là mạnh hơn Sĩ một chút. Một Tốt qua hà được đổi lấy 1 Sĩ hay 1 Tượng. Tuy nhiên khả năng phòng thủ của Tượng nhỉnh hơn nên nếu Sĩ là 2 thì Tượng là 2,5.</p>
-            <h4 class="w-100">Xe</h4>
-            <p>Quân Xe đi ngang hoặc dọc trên bàn cờ miễn là đừng bị quân khác cản đường từ điểm đi đến điểm đến. Xe được coi là quân cờ mạnh nhất. Giá trị của Xe thường tính là bằng 2 Pháo hoặc Pháo Mã.</p>
-            <p>Khai cuộc thường tranh đưa các quân Xe ra các đường dọc thông thoáng, dễ phòng thủ và tấn công.</p>
-            <h4 class="w-100">Pháo</h4>
-            <p>Quân Pháo đi ngang và dọc giống như Xe. Điểm khác biệt là Pháo muốn ăn quân thì nó phải nhảy qua đúng 1 quân nào đó. Khi không ăn quân, tất cả những điểm từ điểm đi đến điểm đến cũng phải không có quân cản.</p>
-            <p>Cờ tướng cổ đại không có quân Pháo. Các nhà nghiên cứu đều nhất trí là quân Pháo được bổ sung từ thời nhà Đường. Đây là quân cờ ra đời muộn nhất trên bàn cờ tướng vì tới thời đó, pháo được sử dụng trong chiến tranh với hình thức là máy bắn đá. Bấy giờ, từ Pháo (砲) trong chữ Hán được viết với bộ "thạch", nghĩa là đá. Cho đến đời nhà Tống, khi loại pháo mới mang thuốc nổ được phát minh thì từ Pháo (炮) được viết với bộ "hỏa".</p>
-            <p>Do đặc điểm phải có ngòi khi tấn công, Pháo thường dùng Tốt của quân mình trong khai cuộc, hoặc dùng chính Sĩ hay Tượng của mình làm ngòi để chiếu hết tướng đối phương trong tàn cuộc.</p>
-            <p>Trên thực tế thì có tới 70% khai cuộc là dùng Pháo đưa vào giữa dọa bắt tốt đầu của đối phương, gọi là thế Pháo đầu. Đối phương có thể dùng Pháo đối lại cũng vào giữa. Nếu bên đi sau đưa Pháo cùng bên với bên đi trước thì khai cuộc gọi là trận Thuận Pháo, đi Pháo vào ngược bên nhau gọi là trận Nghịch Pháo (hay Liệt Pháo).</p>
-            <h4 class="w-100">Mã</h4>
-            <p>Quân Mã đi ngang 2 ô và dọc 1 ô (hay dọc 2 ô và ngang 1 ô). Nếu có quân cờ nào đó nằm ngay bên cạnh thì Mã bị cản, không được đi đường đó.</p>
-            <p>Mã do không đi thẳng, lại có thể bị cản nên mức độ cơ động của quân này kém hơn Xe và Pháo. Khi khai cuộc, Mã kém hơn Pháo. Khi tàn cuộc, Mã trở nên mạnh hơn Pháo.</p>
-            <h4 class="w-100">Tốt (Binh)</h4>
-            <p>Quân Tốt đi 1 ô mỗi nước. Nếu Tốt chưa qua sông, nó chỉ được tiến. Nếu Tốt đã qua sông thì được đi ngang hay tiến, không được đi lùi.</p>
-            <p>Khi đi đến đường biên ngang bên phần sân đối phương, lúc này, chúng được gọi là Tốt lụt.</p>
-            <p>Trong khai cuộc, việc thí Tốt là chuyện tương đối phổ biến. Ngoại trừ việc phải bảo vệ Tốt đầu, các quân Tốt khác thường xuyên bị xe pháo mã ăn mất. Việc mất mát một vài Tốt ngay từ đầu cũng được xem như việc thí quân.</p>
-            <p>Đến cờ tàn, giá trị của Tốt tăng nhanh và số lượng Tốt khi đó có thể đem lại thắng lợi hoặc chỉ hòa cờ. Khi đó việc đưa được Tốt qua sông và tới gần cung Tướng của đối phương trở nên rất quan trọng. Tốt khi đến tuyến áp đáy, ép sát cung Tướng thì Tốt mạnh như Xe.</p>
-          </div>
-        </div>
-      </div>
-<?php
 include template('adsense');
 ?>
     </main>
 <?php
 include template('footer');
-?>
-  </body>
-<?php
 include template('service_worker');
 ?>
+  </body>
 </html>

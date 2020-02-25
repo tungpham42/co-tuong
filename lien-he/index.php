@@ -72,7 +72,7 @@ include template('header');
                   <div class="col-md-12">
 
                     <div class="md-form">
-                      <textarea type="text" id="message" name="message" rows="8" class="form-control md-textarea"></textarea>
+                      <textarea id="message" name="message" rows="8" class="form-control md-textarea"></textarea>
                       <label for="message">Tin nhắn</label>
                     </div>
 
@@ -93,7 +93,7 @@ include template('header');
             <div class="col-md-3 text-center">
               <ul class="list-unstyled mb-0">
                 <li><i class="fas fa-map-marker-alt fa-2x"></i>
-                  <p>Hồ Chí Minh, 700000, <br/>Việt Nam</p>
+                  <p>TP. Hồ Chí Minh, 700000, <br/>Việt Nam</p>
                 </li>
 
                 <li><i class="fas fa-phone mt-4 fa-2x"></i>
@@ -113,7 +113,7 @@ include template('header');
 include template('script.contact');
 ?>
       <script src="<?php echo $cdn_url; ?>/static/js/gotv.js?v=1"></script>
-      <script type="text/javascript">
+      <script>
       function validateForm() {
         document.getElementById('status').innerHTML = "Đang xử lý...";
         formData = {
@@ -145,12 +145,10 @@ include template('adsense');
     </main>
 <?php
 include template('footer');
+include template('service_worker');
 ?>
     <script>
     manipulateAjax();
     </script>
   </body>
-<?php
-include template('service_worker');
-?>
 </html>

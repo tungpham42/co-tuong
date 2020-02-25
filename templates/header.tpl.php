@@ -9,8 +9,16 @@
             <a class="home" href="/">Trang nhất</a>
           </li>
           <li class="pt-4">
+            <a class="room" href="/danh-sach-phong/">Danh sách phòng</a>
+          </li>
+          <li class="pt-4">
+            <a class="about" href="/gioi-thieu/">Giới thiệu</a>
+          </li>
+          <!--
+          <li class="pt-4">
             <a class="room" href="/?ma-phong=<?php echo md5(time()); ?>">Tạo phòng</a>
           </li>
+          -->
           <li class="pt-4">
             <a class="contact" href="/lien-he/">Liên hệ</a>
           </li>

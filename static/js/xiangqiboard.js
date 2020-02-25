@@ -587,12 +587,13 @@ function expandConfig (config) {
     // default piece theme is wikimedia
     if (!config.hasOwnProperty('pieceTheme') ||
         (!isString(config.pieceTheme) && !isFunction(config.pieceTheme))) {
-    config.pieceTheme = '/static/img/xiangqipieces/wikimedia/{piece}.svg'
+    config.pieceTheme = '/static/img/xiangqipieces/quan/{piece}.svg'
     }
 
     // default board theme is wikimedia
     if (!config.hasOwnProperty('boardTheme') || !isString(config.boardTheme)) {
-    config.boardTheme = '/static/img/xiangqiboards/wikimedia/xiangqiboard.svg'
+    //config.boardTheme = '/static/img/xiangqiboards/wikimedia/xiangqiboard.svg'
+    config.boardTheme = '/static/img/xiangqiboards/banco.svg'
     }
 
     // animation speeds

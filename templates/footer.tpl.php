@@ -1,29 +1,41 @@
 <footer>
   <div class="container">
     <div class="row p-5">
-      <div class="col-12 col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3">
+      <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
         <p>Email liên hệ</p>
-        <a class="w-100" href="mailto:tung.42@gmail.com">tung.42@gmail.com</a>
+        <a class="w-100" href="mailto:tung.42@gmail.com">tung.42@gmail.com</a>        
+        <p class="mt-3"><i class="fal fa-copyright"></i> Bản quyền <a target="_blank" href="https://tungpham42.info/">Phạm Tùng</a></p>
       </div>
-      <div class="col-12 col-xl-4 col-lg-4 col-md-4 col-sm-12">
+      <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
         <ul class="list-unstyled">
           <li>
             <a class="home" href="/">Trang nhất</a>
+          </li>
+          <li>
+            <a class="room" href="/danh-sach-phong/">Danh sách phòng</a>
+          </li>
+          <li>
+            <a class="about" href="/gioi-thieu/">Giới thiệu</a>
           </li>
           <li>
             <a class="contact" href="/lien-he/">Liên hệ</a>
           </li>
         </ul>
       </div>
-      <div class="col-12 col-xl-4 col-lg-4 col-md-4 col-sm-12">
+      <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
         <p>Tìm chúng tôi trên mạng xã hội</p>
-        <a class="w-50 mr-2" target="_blank" href="https://www.facebook.com/NhipSinhHocBiorhythm/"><img style="border-radius: 24%;" width="48" height="48" src="<?php echo $cdn_url; ?>/static/img/ic-facebook.svg" /></a>
-        <a class="w-50" target="_blank" href="https://twitter.com/BiorhythmChart/"><img style="border-radius: 24%;" width="48" height="48" src="<?php echo $cdn_url; ?>/static/img/ic-twitter.svg" /></a>
+        <a class="w-50 mr-2" target="_blank" href="https://www.facebook.com/NhipSinhHocBiorhythm/"><img alt="Facebook" style="border-radius: 24%;" width="48" height="48" src="<?php echo $cdn_url; ?>/static/img/ic-facebook.svg" /></a>
+        <a class="w-50" target="_blank" href="https://twitter.com/BiorhythmChart/"><img alt="Twitter" style="border-radius: 24%;" width="48" height="48" src="<?php echo $cdn_url; ?>/static/img/ic-twitter.svg" /></a>
+      </div>
+      <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
+        <a title="Valid HTML 5" target="_blank" href="https://validator.w3.org/check?uri=referer">
+          <img src="https://www.w3.org/html/logo/badge/html5-badge-h-css3-device-semantics.png" width="197" height="64" alt="HTML5 Powered with CSS3 / Styling, Device Access, and Semantics" title="HTML5 Powered with CSS3 / Styling, Device Access, and Semantics" />
+        </a>
       </div>
     </div>
   </div>
 </footer>
-<div class="modal fade" id="AdBlockModal" tabindex="-1" role="dialog" aria-labelledby="AdBlock" aria-hidden="true">
+<div class="modal fade" id="AdBlockModal" tabindex="-1" role="dialog" aria-label="AdBlock" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content shadow-lg">
       <div class="modal-header">
@@ -41,7 +53,7 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
+<script>
 $('.menu-toggle').on('click', function(){
   if ($(this).hasClass('open')) {
     $(this).removeClass('open').removeClass('close').addClass('close');

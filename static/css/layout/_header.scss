@@ -1,4 +1,4 @@
-body.home header.site-header a.home, body.about header.site-header a.about, body.bmi header.site-header a.bmi, body.game header.site-header a.game, body.contact header.site-header a.contact {
+body.home header.site-header a.home, body.about header.site-header a.about, body.bmi header.site-header a.bmi, body.game header.site-header a.game, body.room header.site-header a.room, body.contact header.site-header a.contact {
   &:before, &::before {
     -webkit-transform: translateY(18px);
     transform: translateY(18px);
