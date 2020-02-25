@@ -4,7 +4,7 @@ ini_set('display_errors', 'On');
 ini_set('max_execution_time', 0);
 set_time_limit(0);
 //$lang_code = init_lang_code();
-require $basepath.'/vendor/autoload.php';
+//require $basepath.'/vendor/autoload.php';
 $lang_code = 'vi';
 $keywords = "cờ tướng, cotuong, co tuong, xiangqi, xiang qi";
 $og_title = "Đây là Máy tính Nhịp sinh học";
